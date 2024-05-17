@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .file-list {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .file-item a {
+            color: #dc3545;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .file-item a:hover {
+            color: #a71d2a;
+            text-decoration: underline;
+        }
+        .upload-btn {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Uploaded Files</h1>
+        <div class="file-list">
+            <ul class="list-unstyled">
+                {% for file in files %}
+                
+                <li class="file-item">
+                    <span>{{ file.filename }}</span>
+                    <a href="{{file.upload_file.url}}" target="_blank" style="color: red;"> VIEW</a></td>
+                    <a href="{{ file.upload_file.url}}" download class="download-button">Download</a>
+
+                    <a href="{% url 'delete_file' file.pk %}" class="delete-btn">Delete</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'upload_file' %}" class="btn btn-primary upload-btn">Upload a New File</a>
+        </div>
+    </div>
+</body>
+</html>

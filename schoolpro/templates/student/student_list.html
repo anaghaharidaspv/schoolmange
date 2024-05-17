@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 50px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            width: 80%;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            margin-left: 10px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        a.update {
+            color: green;
+            left: 10px;
+        }
+        a.delete {
+            color: red;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+  <h1>Student List</h1>
+  <ul>
+      {% for i in student %}
+      <li>{{ i.first_name }}<a href="{% url 'update_student' i.pk %}" class="update">Update</a><a href="{% url 'delete_student' i.pk %}" class="delete">Delete</a></li>
+      {{i.password}}
+      {% endfor %}
+  </ul>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 20px;
+            padding: 40px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spaced-button {
+            padding: 15px 30px; /* Adjust the padding to increase the size */
+            font-size: 18px; /* Adjust the font size */
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff; /* Blue color for buttons */
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .spaced-button:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
+
+        .spaced-button a {
+            color: white; /* Link color */
+            text-decoration: none;
+        }
+
+        .spaced-button a:hover {
+            text-decoration: underline; /* Underline link on hover */
+        }
+
+        .logout-link {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Admin Dashboard</h1>
+
+        <div class="button-container">
+            <button class="spaced-button"><a href="{% url 'add_course' %}"> Course</a></button>
+
+            <button class="spaced-button"><a href="{% url 'add_batch' %}"> Batch</a></button>
+
+            <button class="spaced-button"><a href="{% url 'create_teacher' %}"> Teacher</a></button>
+
+            <button class="spaced-button"><a href="{% url 'create_student' %}"> student</a></button>
+            
+        </div>
+
+        <a class="logout-link" href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f1f1f1;
+        }
+        .profile-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            min-height: 400px;
+        }
+        .profile-heading {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .profile-subheading {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .profile-actions a {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .small-buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .small-buttons a {
+            flex: 1;
+            margin: 0 5px;
+        }
+        @media (max-width: 576px) {
+            .small-buttons {
+                flex-direction: column;
+                bottom: 10px;
+            }
+            .small-buttons a {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-container">
+            <h2 class="profile-heading">Profile of {{ teacher.name }}</h2>
+            <h4 class="profile-subheading">Batch: {{ teacher.batch }}</h4>
+            <h4 class="profile-subheading">Course: {{ teacher.course }}</h4>
+            
+            <div class="profile-actions">
+                <a href="{% url 'upload_file' %}" class="btn btn-primary btn-block">Upload File</a>
+            </div>
+            <div class="small-buttons">
+                <a href="{% url 'file_list' %}" class="btn btn-sm btn-info">List Files</a>
+                <a href="{% url 'teacher_logout' %}" class="btn btn-sm btn-danger">Logout</a>
+                <a href="{% url 'pass_reset' teacher.id %}" class="btn btn-sm btn-warning">Reset Password</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

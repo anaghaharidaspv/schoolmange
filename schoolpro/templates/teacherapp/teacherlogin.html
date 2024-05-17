@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa; /* Light Gray */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff; /* White */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #343a40; /* Dark Gray */
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #343a40; /* Dark Gray */
+            text-align: left;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da; /* Light Gray */
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff; /* Blue */
+            color: #fff; /* White */
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Darker Blue */
+        }
+
+        .teacher-login {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .otp-link {
+            margin-top: 20px;
+            display: block;
+            color: #007bff; /* Blue */
+            text-decoration: none;
+        }
+
+        .otp-link:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #dc3545; /* Red for error messages */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="teacher-login">
+            <h2>Teacher Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a href="{% url 'loginotp' %}" class="otp-link">Login via OTP</a>
+            </form>
+            {% if msg %}
+                <div class="message">{{ msg }}</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
