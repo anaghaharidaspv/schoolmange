@@ -16,51 +16,71 @@
             color: #333;
             margin-top: 50px;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 20px auto;
+        table {
             width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        li {
+        th, td {
             padding: 10px;
-            border-bottom: 1px solid #ddd;
-            position: relative;
+            border: 1px solid #ddd;
+            text-align: left;
         }
-        li:last-child {
-            border-bottom: none;
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
         a {
             text-decoration: none;
             color: #007bff;
             margin-left: 10px;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
         }
         a:hover {
             text-decoration: underline;
         }
         a.update {
             color: green;
-            left: 10px;
         }
         a.delete {
             color: red;
-            right: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Teacher List</h1>
-    <ul>
-        {% for teacher in teachers %}
-            <li>{{ teacher.name }}<a href="{% url 'update_teacher' teacher.pk %}" class="update">Update</a><a href="{% url 'delete_teacher' teacher.pk %}" class="delete">Delete</a></li>
-            <li>{{teacher.email}}</li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Course</th>
+                <th>Batch</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr>
+                <td>TR000{{ teacher.id }}</td>
+                <td>{{ teacher.name }}</td>
+                <td>{{ teacher.email }}</td>
+                <td>{{ teacher.phone_number }}</td>
+                <td>{{ teacher.course }}</td>
+                <td>{{ teacher.batch }}</td>
+                <td>
+                    <a href="{% url 'update_teacher' teacher.pk %}" class="update">Update</a>
+                    <a href="{% url 'delete_teacher' teacher.pk %}" class="delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

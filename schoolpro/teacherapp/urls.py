@@ -1,6 +1,7 @@
 
 from django.urls import path
 from .views import *
+app_name='teacherapp'
 
 
 urlpatterns=[
@@ -13,5 +14,10 @@ urlpatterns=[
     path('upload/', UploadFileView.as_view(), name='upload_file'),
     path('files/', FileListView.as_view(), name='file_list'),
     path('delete/<int:pk>', DeleteFileView.as_view(), name='delete_file'),
-
+    path('import/',ImportDataView.as_view(),name='import'),
+    path('export/',ExportToExcelView.as_view(),name='exportdata'),
+    path('achievement', AchievementListView.as_view(), name='achievement-list'),
+    path('achievementcreate/', AchievementCreateView.as_view(), name='achievement-create'),
+    path('achievementupdate/<int:pk>/', Editachievement.as_view(), name='achievement-update'),
+    path('deleteachievement/<int:pk>',Deleteachievement.as_view(),name='achievement-delete'),
 ]

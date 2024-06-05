@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Notifications</title>
+</head>
+<body>
+    <h2>Notifications List</h2>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Teacher</th>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Document</th>
+            <th>Posted Date</th>
+            <th>Expiry Date</th>
+            <th>Actions</th>
+        </tr>
+        {% for notification in notifications %}
+        <tr>
+            <td>{{notification.id}}</td>
+            <td>
+                {% if notification.teacher %}
+                {{notification.teacher.name}}
+                {% endif %}
+            </td>
+            <td>{{notification.title}}</td>
+            <td>{{notification.message}}</td>
+            <td>
+                {% if notification.document %}
+                    <a href="{{ notification.document.url }}" target="_blank">{{ notification.document }}</a>
+                {% else %}
+                {% endif %}
+            </td>
+            <td>{{notification.posted_date}}</td>
+            <td>{{notification.expiry_date}}</td>
+            <td>
+                <a href="{% url 'update_notifications' notification.id %}"><button>Update</button></a>
+                <a href="{% url 'delete_notifications' notification.id %}"><button>Delete</button></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

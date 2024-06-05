@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subject List</title>
+</head>
+<body>
+    <h1>Subjects</h1>
+    <ul>
+        {% for subject in subjects %}
+            <li>
+                <b>{{ subject.name }}</b> |
+                <a href="{% url 'subject_update' subject.pk %}">Edit</a> |
+                <a href="{% url 'subject_delete' subject.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'subject_create' %}">Add New Subject</a>
+</body>
+</html>

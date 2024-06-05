@@ -5,9 +5,15 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
 from django.views import View
+import openpyxl
 from adminapp.models import Teacher
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
+from django.views import View
+from openpyxl import Workbook
+from .models import excelupload
+from django.contrib import messages
 
 
 class TeacherLogin(View):
@@ -111,6 +117,8 @@ class OtpVerification(View):
             otp_entered = request.POST.get('otp')
             otp_session = request.session.get('otp')
             if otp_session:
+                
+                
                 saved_otp = otp_session.get('code')
                 expiry_time = otp_session.get('expiration_time_string')
                 expiration_time = datetime.strptime(expiry_time, '%Y-%m-%d %H:%M:%S')
@@ -152,3 +160,83 @@ class DeleteFileView(View):
         file = UploadFile.objects.get(pk=pk)
         file.delete()
         return redirect('file_list')
+    
+class ImportDataView(View):
+    
+    def get(self, request):
+        form = UploadFileForm()
+        return render(request, 'sheet/excel_upload.html', {'form': form})
+    def post(self, request):
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['file']
+            wb = openpyxl.load_workbook(file)
+            sheet = wb.active
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                excelupload.objects.create(
+                    name=row[0],
+                    dob=row[1],
+                    phone=row[2]
+                )
+            messages.success(request, "Data imported successfully!")
+            return HttpResponse("imported successfully")
+        return render(request, 'sheet/excel_upload.html', {'form': form})
+
+class ExportToExcelView(View):
+    def get(self, request, *args, **kwargs):
+        # Create a workbook and select the active worksheet
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Excel Upload Data"
+        # Define the headers
+        headers = ['Name', 'Date of Birth', 'Phone']
+        ws.append(headers)
+        # Fetch the data from the database
+        excel_uploads = excelupload.objects.all()
+        # Append the data to the worksheet
+        for upload in excel_uploads:
+            ws.append([upload.name, upload.dob, upload.phone])
+        # Create an HTTP response with the appropriate headers for Excel file download
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=excelupload_data.xlsx'
+        # Save the workbook to the response
+        wb.save(response)
+        return response
+
+
+class AchievementListView(View):
+    def get(self, request):
+        achievements = Achievement.objects.all()
+        return render(request, 'achievements/achievements_list.html', {'achievements': achievements})
+
+class AchievementCreateView(View):
+    def get(self, request):
+        form = AchievementForm()
+        return render(request, 'achievements/achievements_form.html', {'form': form})
+
+    def post(self, request):
+        form = AchievementForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('achievement-list')
+        return render(request, 'achievements/achievements_form.html', {'form': form})
+
+class  Editachievement(View):
+    def get(self,request,pk):
+        ach_obj=Achievement.objects.get(pk=pk)
+        form = AchievementForm(instance=ach_obj)
+        return render(request, 'achievements/achievements_form.html',{'form':form})
+
+    def post(self, request,pk):
+        ach_obj=Achievement.objects.get(pk=pk)
+        form = AchievementForm(request.POST,instance=ach_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('achievement-list')
+        return render(request, 'achievements/achievements_form.html', {'form': form})
+
+class  Deleteachievement(View):
+    def get(self,request,pk):
+        ach_obj=Achievement.objects.get(pk=pk)
+        ach_obj.delete()
+        return redirect('achievement-list')

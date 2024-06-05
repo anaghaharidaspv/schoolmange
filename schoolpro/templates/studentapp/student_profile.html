@@ -6,9 +6,58 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Profile of {{user.first_name}}</h2>
-    <a href="{% url 'student_logout' %}"><button>Logout</button></a>
-    
+    THIS IS PROFILE PAGE OF STUDENT : {{student.first_name}} {{student.last_name}}
+    <a href="{% url 'studentapp:student_logout' %}"><button>Logout</button></a>
+    <a href="{% url 'studentapp:password_reset' %}"><button>Reset Password</button></a>
+    <a href="{% url 'reportcard_list' student.id %}">Report Card<a>
+    <a href="{% url 'studentapp:generate_certificate' student.id %}">CC<a>
+        
+    <div style="height: 300px; width: 300px; background-color: bisque; color: blue;">
+        <h3>Notifications</h3>
+        <ul>
+            {% for notification in notifications %}
+            <li>
+                {% if notification.document %}
 
+                {% else %}
+                <a href="{% url 'studentapp:view_message' notification.id %}">{{notification.title}}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div><br><br><br>
+    <div style="height: 300px; width: 300px; background-color: rgb(245, 211, 169); color: rgb(5, 5, 5);">
+        <h3>Reminders</h3>
+        <ul>
+            {% for reminder, days in reminders %}
+            <li>
+                {% if reminder.document %}
+                <a href="{{ reminder.document.url }}" target="_blank">
+                    {% if days == 0 %}
+                        {{ reminder.title }} ---- will expire today
+                    {% else %}
+                        {{ reminder.title }} ---- will expire within {{ days }} days
+                    {% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'studentapp:view_message' reminder.id %}">
+                    {% if days == 0 %}
+                    {{ reminder.title }} ---- will expire today
+                {% else %}
+                    {{ reminder.title }} ---- will expire within {{ days }} days
+                {% endif %}
+                </a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
+
+
+
+
+
+
+

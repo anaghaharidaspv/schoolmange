@@ -7,22 +7,24 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffeb3b; /* Light Yellow */
+            background-color: #ffffff; /* White */
             margin: 0;
             padding: 0;
+            color: #000000; /* Black */
         }
 
         .container {
             width: 50%;
-            margin: 20px auto;
-            background-color: #ffffff; /* White */
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #000000; /* Black */
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-            color: #333; /* Dark Gray */
+            color: #ffffff; /* White */
             text-align: center;
             margin-bottom: 30px;
         }
@@ -34,20 +36,21 @@
 
         label {
             margin-bottom: 10px;
-            color: #333; /* Dark Gray */
+            color: #ffffff; /* White */
         }
 
         input[type="text"], input[type="password"] {
             padding: 10px;
             margin-bottom: 20px;
-            border: 1px solid #ccc; /* Light Gray */
+            border: 1px solid #ffffff; /* White */
             border-radius: 5px;
             font-size: 16px;
+            color: #000000; /* Black */
         }
 
         button[type="submit"] {
-            background-color: #4CAF50; /* Green */
-            color: #fff; /* White */
+            background-color: #ffffff; /* White */
+            color: #000000; /* Black */
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -57,14 +60,35 @@
         }
 
         button[type="submit"]:hover {
-            background-color: #45a049; /* Darker Green */
+            background-color: #cccccc; /* Light Gray */
         }
 
-        .sudent-login {
-            background-color: #ffcdd2; /* Light Red */
+        .student-login {
+            background-color: #000000; /* Black */
             padding: 20px;
             border-radius: 10px;
             text-align: center;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: #ffffff; /* White */
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .register-link {
+            color: #ffffff; /* White */
+            font-size: 16px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -72,25 +96,24 @@
     <div class="container">
         <div class="student-login">
             <h2>Student Login</h2>
-            <form  method="post">
+            <form method="post">
                 {% csrf_token %}
                 
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                    
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
                 
-
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                
                 <button type="submit">Login</button>
-                <a href="{% url 'password_reset' %}">forgot password</a>
-                <br><br>
-                
-            </form>
-           
-        </div>
 
+                <div class="links">
+                    <a href="{% url 'studentapp:password_reset' %}">Forgot password?</a>
+                    <p>If you are not registered, click the link below to register:</p>
+                    <a class="register-link" href="{% url 'create_student' %}">Register Now</a>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

@@ -43,7 +43,7 @@
             font-size: 18px; /* Adjust the font size */
             border: none;
             border-radius: 5px;
-            background-color: #007bff; /* Blue color for buttons */
+            background-color: #000000; /* Blue color for buttons */
             color: white;
             text-decoration: none;
             cursor: pointer;
@@ -51,7 +51,7 @@
         }
 
         .spaced-button:hover {
-            background-color: #0056b3; /* Darker blue color on hover */
+            background-color: #000000; /* Darker blue color on hover */
         }
 
         .spaced-button a {
@@ -87,6 +87,10 @@
             <button class="spaced-button"><a href="{% url 'create_teacher' %}"> Teacher</a></button>
 
             <button class="spaced-button"><a href="{% url 'create_student' %}"> student</a></button>
+
+            <button class="spaced-button"><a href="{% url 'attendance_report' %}"> Attendance Report</a></button>
+
+            <button class="spaced-button"><a href="{% url 'announcement_list' %}">Announcements</a></button>
             
         </div>
 

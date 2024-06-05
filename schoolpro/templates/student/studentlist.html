@@ -1,0 +1,17 @@
+<!-- templates/student_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student List</title>
+</head>
+<body>
+    <h1>Student List</h1>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.first_name }} {{ student.last_name }} 
+                <a href="{% url 'studentapp:generate_certificate'  student.id %}">Generate Certificate</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

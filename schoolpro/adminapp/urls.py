@@ -3,8 +3,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-
-    path('', LoginView.as_view(), name='login'),
+    path('',indexview.as_view(),name='index'),
+    path('adminlogin', LoginView.as_view(), name='login'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
@@ -21,11 +21,14 @@ urlpatterns = [
     path('update_teacher/<int:pk>/', TeacherUpdateView.as_view(), name='update_teacher'),
     path('delete_teacher/<int:pk>/', TeacherDeleteView.as_view(), name='delete_teacher'),
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
+    path('liststates',LoadStates.as_view(),name='list_states'),
+    path('listcities',LoadCity.as_view(),name='list_cities'),
     
     path('create_student/', StudentCreateView.as_view(), name='create_student'),
     path('update_student/<int:pk>/', StudentUpdateView.as_view(), name='update_student'),
     path('delete_student/<int:pk>/', StudentDeleteView.as_view(), name='delete_student'),
     path('students/', StudentListView.as_view(), name='student_list'),
+    path('attendancereport',AttendanceReportView.as_view(), name='attendance_report')
 
 ]
 

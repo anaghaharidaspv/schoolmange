@@ -19,3 +19,19 @@ class UploadFileForm(forms.ModelForm):
     class Meta:
         model = UploadFile
         fields = ['filename', 'upload_file']
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
+    
+    
+
+
+class AchievementForm(forms.ModelForm):
+    class Meta:
+        model = Achievement
+        fields = ['student', 'score']
+  
+
+
+
+

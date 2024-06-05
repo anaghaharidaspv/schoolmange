@@ -2,14 +2,23 @@ import random
 from django.conf import settings
 from django.contrib.auth import login, logout
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .models import *
 from .forms import *
+from attendanceapp.models import *
+from django.utils.dateparse import parse_date
 
 
+    
+class indexview(View):
+    def get(self,request):
+        return render(request,'index.html')
+       
+    
+ 
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
@@ -228,7 +237,7 @@ class StudentDeleteView(View):
     def post(self, request, pk):
         student = Student.objects.get(pk=pk)
         student.delete()
-        return redirect('teacher_list')  # Redirect to a URL name for the teacher list
+        return redirect('student_list')  # Redirect to a URL name for the teacher list
 
 
 class StudentListView(View):
@@ -236,3 +245,34 @@ class StudentListView(View):
         student = Student.objects.all()
         return render(request, 'student/student_list.html', {'student': student})
 
+class AttendanceReportView(View):
+    def get(self, request):
+        return render(request, 'Attendance/attendance_report.html')
+    def post(self, request):
+        start_date = parse_date(request.POST.get('start_date'))
+        end_date = parse_date(request.POST.get('end_date'))
+        teacher_id = request.POST.get('teacher_id')
+        if start_date and end_date:
+            if teacher_id:
+                attendances = TeacherAttendance.objects.filter(date__range=[start_date, end_date], teacher_name_id=teacher_id)
+            else:
+                attendances = TeacherAttendance.objects.filter(date__range=[start_date, end_date])
+        else:
+            attendances = TeacherAttendance.objects.none()
+        return render(request, 'Attendance/attendance_report.html', {
+            'attendances': attendances,
+            'start_date': start_date,
+            'end_date': end_date,
+            'teacher_id': teacher_id
+        })
+class LoadStates(View):
+    def get(self,request,*args,**kwrags):
+        countryid=request.GET.get('country_id')
+        states=State1.objects.filter(country=countryid).all()
+        print(states)
+        return JsonResponse (list(states.values('id', 'state_name')), safe=False)
+class LoadCity(View):
+    def get(self,request,*args,**kwrags):
+        stateid=request.GET.get('state_id')
+        cities=City1.objects.filter(state=stateid).all()
+        return JsonResponse(list(cities.values('id', 'city_name')), safe=False)
