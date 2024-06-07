@@ -28,6 +28,7 @@ class TeacherAttendance(models.Model):
         return net_working_time.total_seconds() / 3600  # Return hours
     def get_break_time(self):
         """
+        
         Calculate the total break time.
         """
         if None in (self.date, self.break_start_time, self.break_end_time):

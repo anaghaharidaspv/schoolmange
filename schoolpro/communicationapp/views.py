@@ -1,56 +1,50 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import Announcement,Notifications
+from pytz import timezone
+from .models import Announcement1,Notifications
 from .forms import AnnouncementForm,NotificationsForm
 
 class AnnouncementListView(View):
     def get(self, request):
-        announcements = Announcement.objects.all()
-        return render(request, 'communicationapp/announcement_list.html', {'announcements': announcements})
+        announcements = Announcement1.objects.all()
+        return render(request, 'announcements/announcements.html', {'announcements': announcements})
 class AnnouncementCreateView(View):
     def get(self, request):
         form = AnnouncementForm()
-        return render(request, 'communicationapp/announcement_create.html', {'form': form})
+        return render(request, 'announcements/create_announcement.html', {'form': form})
     def post(self, request):
         form = AnnouncementForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('announcement_list')
-        return render(request, 'communicationapp/announcement_create.html', {'form': form})
-    
-    
+        return render(request, 'announcements/create_announcement.html', {'form': form})
 class AnnouncementDetailView(View):
     def get(self, request, pk):
-        announcement = Announcement.objects.get(pk=pk)
-        return render(request, 'communicationapp/announcement_details.html', {'announcement': announcement})
-    
-    
+        announcement = Announcement1.objects.get(pk=pk)
+        return render(request, 'announcements/announcement_detail.html', {'announcement': announcement})
 class AnnouncementUpdateView(View):
     def get(self, request, pk):
-        announcement = Announcement.objects.get(pk=pk)
+        announcement = Announcement1.objects.get(pk=pk)
         form = AnnouncementForm(instance=announcement)
-        return render(request, 'communicationapp/announcement_update.html', {'form': form, 'announcement': announcement})
+        return render(request, 'announcements/update_announcement.html', {'form': form, 'announcement': announcement})
     def post(self, request, pk):
-        announcement = Announcement.objects.get(pk=pk)
+        announcement = Announcement1.objects.get(pk=pk)
         form = AnnouncementForm(request.POST, instance=announcement)
         if form.is_valid():
             form.save()
             return redirect('announcement_list')
-        return render(request, 'communicationapp/announcement_update.html', {'form': form, 'announcement': announcement})
-    
-    
+        return render(request, 'announcements/update_announcement.html', {'form': form, 'announcement': announcement})
 class AnnouncementDeleteView(View):
     def get(self, request, pk):
-        announcement = Announcement.objects.get(pk=pk)
+        announcement = Announcement1.objects.get(pk=pk)
         announcement.delete()
         return redirect('announcement_list')
-
-class AnnouncementListView(View):
+class AnnouncementsDahboardListView(View):
     def get(self, request):
-        announcements = Announcement.objects.all()
-        return render(request, 'communicationapp/mainannouncement.html', {'announcements': announcements})
-    
+        today=timezone.now().date()
+        announcements = Announcement1.objects.filter(expiry_date__gte=today)
+        return render(request, 'dashboard_announcement.html', {'announcements': announcements})
 class AddNotifications(View):
     def get(self,request):
         form=NotificationsForm()

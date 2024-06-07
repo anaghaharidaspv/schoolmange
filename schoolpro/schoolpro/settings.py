@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'certificateapp',
     'communicationapp',
     'imageupload',
+    'django_recaptcha',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,5 @@ STATIC_ROOT =os.path.join(BASE_DIR,'assets')
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
+RECAPTCHA_PUBLIC_KEY = '6LdIb_EpAAAAABMHHEvjY-R06cceiphaOODiRmDX'
+RECAPTCHA_PRIVATE_KEY = '6LdIb_EpAAAAAJRcwKOFRHYpuR6GGuIa4_fs5v1P'

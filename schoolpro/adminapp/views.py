@@ -28,6 +28,7 @@ class LoginView(View):
         password = request.POST.get('password')
 
         user = adminmodel.objects.get(username=username, password=password)
+        print(user)
         if user is not None:
             login(request, user)
 
@@ -60,7 +61,7 @@ class AddCourseView(View):
         return redirect('course_list')
 
 
-class UpdateCourseView(View):
+class UpdateCourseView(View): 
     def get(self, request, pk):
         course = Course.objects.get(pk=pk)
         return render(request, 'course/update_course.html', {'course': course})

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Announcement</title>
+    <title>Update Announcement</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -75,11 +75,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Create Announcement</h1>
+        <h1>Update Announcement</h1>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Create</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 </body>

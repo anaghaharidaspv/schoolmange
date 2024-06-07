@@ -1,11 +1,11 @@
 from django.db import models
 from adminapp.models import *
 
-class Announcement(models.Model):
+class Announcement1(models.Model):
     title = models.CharField(max_length=200)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    
+    expiry_date=models.DateField(null=True)
     def __str__(self):
         return self.title
     

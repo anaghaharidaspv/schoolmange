@@ -10,25 +10,38 @@ from adminapp.models import Student,Teacher
 from communicationapp.models import Notifications
 from django.template.loader import render_to_string
 from django.db.models import Q
+from .forms import StudentLoginForm
 
 
+        
 class StudentLogin(View):
-    def get(self, request):
-        return render(request, 'studentapp/student_login.html')
+    def get(self,request):
+        form=StudentLoginForm()
+        return render(request,'studentapp/student_login.html',{'form':form})
+    def post(self,request):
+        if request.method=='POST':
+            form=StudentLoginForm(request.POST)
+            if form.is_valid():
+                username=form.cleaned_data['username']
+                password=form.cleaned_data['password']
+                print(username,password)
+                student=authenticate(request,username=username,password=password)
+                print(student)
+                if student is not None:
+                    login(request,student)
+                    return redirect('studentapp:student_profile')
+                else:
+                    msg='Wrong credentials'
+                    return render(request,'studentapp/student_login.html',{'form':form,'msg':msg})
+            return HttpResponse('validation failed')
 
-    def post(self, request):
-        msg = ''
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            
-            user=authenticate(request,username=username,password=password)
-            print(user)
-            if user is not None:
-                login(request, user)
-                return redirect('studentapp:student_profile')
-                msg = 'error'
-            return render(request, 'studentapp/student_login.html',{ 'msg': msg})
+
+
+
+
+
+
+
     
 
 class StudentProfile(View):
@@ -85,10 +98,6 @@ class GenerateCertificateView(View):
         
         # Draw the certificate content
         
-        # p.drawString(200, height - 200, "Course Completion Certificate")
-        # p.drawString(100, height - 150, f"This is to certify that {student.first_name} {student.last_name} ")
-        # p.drawString(100, height - 200, f" has successfully completed the {student.courses} course.")
-        p.setFont("Helvetica-Bold", 24)
         p.drawCentredString(width / 2.0, height - 100, "Certificate of Completion")
         p.setFont("Helvetica", 18)
         p.drawCentredString(width / 2.0, height - 150, f"This is to certify that")

@@ -79,13 +79,12 @@
             <li>
                 <h3>{{ announcement.title }}</h3>
                 <p>{{ announcement.message }}</p>
-               
-                
+                <a href="{% url 'announcement_detail' pk=announcement.pk %}">View Details</a>
             </li>
         {% empty %}
             <li>No announcements available.</li>
         {% endfor %}
     </ul>
-    
+    <a class="create-announcement" href="{% url 'announcement_create' %}">Create Announcement</a>
 </body>
 </html>

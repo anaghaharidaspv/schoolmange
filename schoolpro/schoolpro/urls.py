@@ -27,7 +27,8 @@ urlpatterns = [
     path('attendanceapp/',include('attendanceapp.urls')),
     path('certificateapp/',include('certificateapp.urls')),
     path('communicationapp/',include('communicationapp.urls')),
-    path('imageupload/',include('imageupload.urls'))
+    path('imageupload/',include('imageupload.urls')),
+   
     
 ]
 if settings.DEBUG:
