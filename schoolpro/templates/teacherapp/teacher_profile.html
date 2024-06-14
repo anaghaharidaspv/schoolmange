@@ -66,15 +66,16 @@
             <h4 class="profile-subheading">Course: {{ teacher.course }}</h4>
             
             <div class="profile-actions">
-                <a href="{% url 'upload_file' %}" class="btn btn-primary btn-block">Upload File</a>
+                <a href="{% url 'teacherapp:upload_file' %}" class="btn btn-primary btn-block">Upload File</a>
             </div>
             <div class="small-buttons">
-                <a href="{% url 'file_list' %}" class="btn btn-sm btn-info">List Files</a>
+                <a href="{% url 'teacherapp:file_list' %}" class="btn btn-sm btn-info">List Files</a>
                 
-                <a href="{% url 'teacher_logout' %}" class="btn btn-sm btn-danger">Logout</a>
-                <a href="{% url 'pass_reset' teacher.id %}" class="btn btn-sm btn-warning">Reset Password</a>
+                <a href="{% url 'teacherapp:teacher_logout' %}" class="btn btn-sm btn-danger">Logout</a>
+                <a href="{% url 'teacherapp:pass_reset' teacher.id %}" class="btn btn-sm btn-warning">Reset Password</a>
             </div>
         </div>
     </div>
+    <div> <a href="{% url 'chat:lobby' %}">let us chat </a></div>
 </body>
 </html>

@@ -147,7 +147,7 @@ class UploadFileView(View):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('file_list')
+            return redirect('teacherapp:file_list')
         return render(request, 'files/upload_file.html', {'form': form})
 
 class FileListView(View):
@@ -159,7 +159,7 @@ class DeleteFileView(View):
     def get(self, request, pk):
         file = UploadFile.objects.get(pk=pk)
         file.delete()
-        return redirect('file_list')
+        return redirect('teacherapp:file_list')
     
 class ImportDataView(View):
     

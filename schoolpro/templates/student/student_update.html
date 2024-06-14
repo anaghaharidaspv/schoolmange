@@ -48,4 +48,40 @@
         <button type="submit">Submit</button>
     </form>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+  $("#id_country").change(function () {
+      var url = "{% url 'list_states' %}";
+      var countryId = $(this).val();
+      $.ajax({
+          url: url,
+          data: {
+              'country_id': countryId
+          },
+          success: function (data) {
+              $("#id_state").html('<option value="">Select state</option>');
+              $.each(data, function (key, value) {
+                  $("#id_state").append('<option value="' + value.id + '">' + value.state_name + '</option>');
+              });
+          }
+      });
+  });
+  $("#id_state").change(function () {
+      var url = "{% url 'list_cities' %}";
+      var stateId = $(this).val();
+      $.ajax({
+          url: url,
+          data: {
+              'state_id': stateId
+          },
+          success: function (data) {
+              $("#id_city").html('<option value="">Select city</option>');
+              $.each(data, function (key, value) {
+                  $("#id_city").append('<option value="' + value.id + '">' + value.city_name + '</option>');
+              });
+          }
+      });
+  });
+</script>
 </html>

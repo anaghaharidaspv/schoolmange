@@ -1,63 +1,192 @@
+{% load templatetags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1, h3 {
+            color: #007BFF;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 10px;
+        }
+        .profile-info {
+            font-size: 18px;
+        }
+        .actions {
+            margin: 20px 0;
+        }
+        .actions a {
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .actions button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .actions button:hover {
+            background-color: #0056b3;
+        }
+        .card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+        .card ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .card ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .card ul li a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .card ul li a:hover {
+            text-decoration: underline;
+        }
+        .uploaded-files {
+            margin-top: 20px;
+        }
+        .uploaded-files ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .uploaded-files ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .uploaded-files ul li a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .uploaded-files ul li a:hover {
+            text-decoration: underline;
+        }
+        .round-image {
+            border-radius: 50%;
+            height: 100px;
+            width: 100px;
+            object-fit: cover; /* Ensure the image covers the area */
+        }
+        
+    </style>
 </head>
 <body>
-    THIS IS PROFILE PAGE OF STUDENT : {{student.first_name}} {{student.last_name}}
-    <a href="{% url 'studentapp:student_logout' %}"><button>Logout</button></a>
-    <a href="{% url 'studentapp:password_reset' %}"><button>Reset Password</button></a>
-    <a href="{% url 'reportcard_list' student.id %}">Report Card<a>
-    <a href="{% url 'studentapp:generate_certificate' student.id %}">CC<a>
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-info">
+                <h1>Profile of {{ student.first_name }} {{ student.last_name }}</h1>
+                <p>Courses: {{ stud_ent.courses }} Batch: {{ stud_ent.batch }} </p>
+            </div>
+            <div>
+            {% if img.image %}
+                <a href="{{ img.image.url }}">
+                <img src="{{ img.image.url }}" alt="Whatever" class="round-image">
+                 </a>
+                 
+            {% endif %}
+          </div>
+                
+           <br>
+            
+            <div class="actions">
+                <a href="{% url 'studentapp:student_logout' %}"><button>Logout</button></a><br>
+                <br>
+                <a href="{% url 'studentapp:password_reset' %}"><button>Reset Password</button></a>
+            </div>
+        </div>
         
-    <div style="height: 300px; width: 300px; background-color: bisque; color: blue;">
-        <h3>Notifications</h3>
-        <ul>
-            {% for notification in notifications %}
-            <li>
-                {% if notification.document %}
-
-                {% else %}
-                <a href="{% url 'studentapp:view_message' notification.id %}">{{notification.title}}</a>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-    </div><br><br><br>
-    <div style="height: 300px; width: 300px; background-color: rgb(245, 211, 169); color: rgb(5, 5, 5);">
-        <h3>Reminders</h3>
-        <ul>
-            {% for reminder, days in reminders %}
-            <li>
-                {% if reminder.document %}
-                <a href="{{ reminder.document.url }}" target="_blank">
-                    {% if days == 0 %}
+        <div class="actions">
+            <a href="{% url 'reportcard_list' student.id %}"><button>View Report Card</button></a>
+            <a href="{% url 'studentapp:generate_certificate' student.id %}"><button>Generate Certificate</button></a>
+        </div>
+        
+        <div class="card">
+            <h3>Notifications</h3>
+            <ul>
+                {% for notification in notifications %}
+                <li>
+                    {% if notification.document %}
+                        <a href="{{ notification.document.url }}" target="_blank">{{ notification.title }}</a>
+                    {% else %}
+                        <a href="{% url 'studentapp:view_message' notification.id %}">{{ notification.title }}</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Reminders</h3>
+            <ul>
+                {% for reminder, days in reminders %}
+                <li>
+                    {% if reminder.document %}
+                    <a href="{{ reminder.document.url }}" target="_blank">
+                        {% if days == 0 %}
+                            {{ reminder.title }} ---- will expire today
+                        {% else %}
+                            {{ reminder.title }} ---- will expire within {{ days }} days
+                        {% endif %}
+                    </a>
+                    {% else %}
+                    <a href="{% url 'studentapp:view_message' reminder.id %}">
+                        {% if days == 0 %}
                         {{ reminder.title }} ---- will expire today
                     {% else %}
                         {{ reminder.title }} ---- will expire within {{ days }} days
                     {% endif %}
-                </a>
-                {% else %}
-                <a href="{% url 'studentapp:view_message' reminder.id %}">
-                    {% if days == 0 %}
-                    {{ reminder.title }} ---- will expire today
-                {% else %}
-                    {{ reminder.title }} ---- will expire within {{ days }} days
-                {% endif %}
-                </a>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
+                    </a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="uploaded-files">
+            <h3>Uploaded Files</h3>
+            <ul>
+                {% for file in files %}
+                <li><a href="{{ file.upload_file.url }}" target="_blank">{% get_file_name file.id %}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+<div>
+    <a href="{% url 'chat:lobby' %}">let us chat </a>
+</div>
 </body>
 </html>
-
-
-
-
-
-
-

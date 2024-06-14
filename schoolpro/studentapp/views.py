@@ -5,12 +5,15 @@ from django.contrib.auth import login,logout,authenticate
 from django.views import View
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
+from teacherapp.models import UploadFile
 from .forms import CC
 from adminapp.models import Student,Teacher
 from communicationapp.models import Notifications
 from django.template.loader import render_to_string
 from django.db.models import Q
 from .forms import StudentLoginForm
+from imageupload.models import ImageUpload
 
 
         
@@ -55,6 +58,9 @@ class StudentProfile(View):
         s_batch=stud_ent.batch
         print(s_batch)
         teacher=Teacher.objects.get(course=s_course,batch=s_batch)
+        files=UploadFile.objects.filter(courses=s_course,batch=s_batch)
+        img=ImageUpload.objects.get(student=stud_ent.id)
+        print(img.title)
         notifications=Notifications.objects.filter(Q(teacher=teacher)| Q(teacher__isnull=True))  # to get queryset
         # with specific teacher id and without teacher id
         #**********end here*****************
@@ -65,7 +71,7 @@ class StudentProfile(View):
             if 0 <= days <= 5:
                 reminders.append((notif, days))
                 print(reminders)
-        return render(request,'studentapp/student_profile.html',{'student':student,'notifications':notifications,'reminders':reminders,'days':days})
+        return render(request,'studentapp/student_profile.html',{'student':student,'notifications':notifications,'reminders':reminders,'days':days,'stud_ent':stud_ent,'files':files,'img':img})
         # return render(request,'student_profile.html',{'student':student,'notifications':notifications})
 class StudentLogout(View):
     def get(self, request):
@@ -123,3 +129,4 @@ class ViewNotificationMessage(View):
      def get(self,request,id):
         notification=Notifications.objects.get(id=id)
         return render(request,'notifications/notification_message.html',{'notification':notification})
+    

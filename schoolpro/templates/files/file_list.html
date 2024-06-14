@@ -51,11 +51,11 @@
                     <a href="{{file.upload_file.url}}" target="_blank" style="color: red;"> VIEW</a></td>
                     <a href="{{ file.upload_file.url}}" download class="download-button">Download</a>
 
-                    <a href="{% url 'delete_file' file.pk %}" class="delete-btn">Delete</a>
+                    <a href="{% url 'teacherapp:delete_file' file.pk %}" class="delete-btn">Delete</a>
                 </li>
                 {% endfor %}
             </ul>
-            <a href="{% url 'upload_file' %}" class="btn btn-primary upload-btn">Upload a New File</a>
+            <a href="{% url 'teacherapp:upload_file' %}" class="btn btn-primary upload-btn">Upload a New File</a>
         </div>
     </div>
 </body>

@@ -270,7 +270,6 @@ class LoadStates(View):
     def get(self,request,*args,**kwrags):
         countryid=request.GET.get('country_id')
         states=State1.objects.filter(country=countryid).all()
-        print(states)
         return JsonResponse (list(states.values('id', 'state_name')), safe=False)
 class LoadCity(View):
     def get(self,request,*args,**kwrags):

@@ -24,7 +24,7 @@
     <div class="container">
         <div class="upload-container">
             <h1 class="text-center">Upload File</h1>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" action="{% url 'teacherapp:upload_file' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary upload-btn">Upload</button>

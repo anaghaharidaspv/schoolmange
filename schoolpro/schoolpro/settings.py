@@ -46,7 +46,16 @@ INSTALLED_APPS = [
     'communicationapp',
     'imageupload',
     'django_recaptcha',
+    'chat',
+    'channels',
 ]
+ASGI_APPLICATION='schoolpro.asgi.application'
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    }
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -28,6 +28,7 @@ urlpatterns = [
     path('certificateapp/',include('certificateapp.urls')),
     path('communicationapp/',include('communicationapp.urls')),
     path('imageupload/',include('imageupload.urls')),
+    path('chat/',include('chat.urls')),
    
     
 ]

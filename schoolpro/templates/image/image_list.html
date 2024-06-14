@@ -1,5 +1,7 @@
 <ul>
-  {% for image in images %}
-      <li><img src="{{ image.image.url }}" width="200px" height="200px"></li>
+  {% for img in images %}
+  <a href="{{ img.image.url }}" data-lightbox="image-gallery" data-title="{{ img.image.name }}">
+    <img src="{{ img.image.url }}" alt="{{ img.image.name }}">
+  </a>
   {% endfor %}
 </ul>

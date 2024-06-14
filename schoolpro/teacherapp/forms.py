@@ -18,10 +18,9 @@ class OtpLoginForm(forms.ModelForm):
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = UploadFile
-        fields = ['filename', 'upload_file']
+        fields = '__all__'
 
-class UploadFileForm(forms.Form):
-    file = forms.FileField()
+
     
     
 
