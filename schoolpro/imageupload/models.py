@@ -1,3 +1,4 @@
+
 from django.db import models
 from adminapp.models import Student
 
@@ -9,3 +10,4 @@ class ImageUpload(models.Model):
 
     def __str__(self):
         return self.title
+    

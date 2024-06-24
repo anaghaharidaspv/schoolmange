@@ -59,7 +59,7 @@ class Reportcard(models.Model):
           return 'C'
        else:
            
-           
+         
           return 'F'
 
     def performance(self):

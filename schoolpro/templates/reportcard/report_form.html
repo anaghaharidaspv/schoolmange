@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>create</title>
+    <title>Create</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Create</h1>
@@ -12,6 +14,36 @@
         {{ form.as_p }}
         <button type="submit">Save</button>
     </form>
-  
+    <script>
+        $(document).ready(function() {
+            function updateSubjectOptions() {
+                let selectedSubjects = [];
+                $('select.subject-select').each(function() {
+                    let selectedValue = $(this).val();
+                    if (selectedValue) {
+                        selectedSubjects.push(selectedValue);
+                    }
+                });
+
+                $('select.subject-select').each(function() {
+                    let currentSelect = $(this);
+                    let currentValue = currentSelect.val();
+                    currentSelect.find('option').each(function() {
+                        if ($(this).val() && $(this).val() !== currentValue && selectedSubjects.includes($(this).val())) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
+                });
+            }
+
+            $('select.subject-select').change(function() {
+                updateSubjectOptions();
+            });
+
+            updateSubjectOptions();
+        });
+    </script>
 </body>
 </html>

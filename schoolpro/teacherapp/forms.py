@@ -21,14 +21,14 @@ class UploadFileForm(forms.ModelForm):
         fields = '__all__'
 
 
-    
-    
-
 
 class AchievementForm(forms.ModelForm):
     class Meta:
         model = Achievement
         fields = ['student', 'score']
+        
+class Excelform(forms.Form):
+    file=forms.FileField()
   
 
 

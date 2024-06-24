@@ -40,11 +40,6 @@ class StudentLogin(View):
 
 
 
-
-
-
-
-
     
 
 class StudentProfile(View):
@@ -71,7 +66,7 @@ class StudentProfile(View):
             if 0 <= days <= 5:
                 reminders.append((notif, days))
                 print(reminders)
-        return render(request,'studentapp/student_profile.html',{'student':student,'notifications':notifications,'reminders':reminders,'days':days,'stud_ent':stud_ent,'files':files,'img':img})
+        return render(request,'studentapp/student_profile.html',{'student':student,'notifications':notifications,'reminders':reminders,'stud_ent':stud_ent,'files':files,'img':img})
         # return render(request,'student_profile.html',{'student':student,'notifications':notifications})
 class StudentLogout(View):
     def get(self, request):

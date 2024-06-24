@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'chat',
     'channels',
+    "debug_toolbar",
 ]
 ASGI_APPLICATION='schoolpro.asgi.application'
 CHANNEL_LAYERS = {
@@ -55,9 +56,20 @@ CHANNEL_LAYERS = {
         'BACKEND':'channels.layers.InMemoryChannelLayer'
     }
 }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,6 +98,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'schoolpro.wsgi.application'
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 
 
 # Database

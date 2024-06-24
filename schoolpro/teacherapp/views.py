@@ -1,4 +1,5 @@
 from datetime import datetime,timedelta
+from cycler import V
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -12,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.views import View
 from openpyxl import Workbook
-from .models import excelupload
+from certificateapp.models import Reportcard ,Subject,Student
 from django.contrib import messages
 
 
@@ -162,21 +163,32 @@ class DeleteFileView(View):
         return redirect('teacherapp:file_list')
     
 class ImportDataView(View):
-    
     def get(self, request):
-        form = UploadFileForm()
+        form = Excelform()
         return render(request, 'sheet/excel_upload.html', {'form': form})
+
     def post(self, request):
-        form = UploadFileForm(request.POST, request.FILES)
+        form = Excelform(request.POST, request.FILES)
         if form.is_valid():
+            if 'file' not in request.FILES:
+                messages.error(request, "No file uploaded!")
+                return render(request, 'sheet/excel_upload.html', {'form': form})
             file = request.FILES['file']
             wb = openpyxl.load_workbook(file)
             sheet = wb.active
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                excelupload.objects.create(
-                    name=row[0],
-                    dob=row[1],
-                    phone=row[2]
+                Reportcard.objects.create(
+                    stuname=Student.objects.get(first_name=row[0]),  # Assuming stuname is a ForeignKey to a Student model
+                    sub1=Subject.objects.get(name=row[1]),           # Assuming sub1 is a ForeignKey to a Subject model
+                    mark1=row[2],
+                    sub2=Subject.objects.get(name=row[3]),
+                    mark2=row[4],
+                    sub3=Subject.objects.get(name=row[5]),
+                    mark3=row[6],
+                    sub4=Subject.objects.get(name=row[7]),
+                    mark4=row[8],
+                    sub5=Subject.objects.get(name=row[9]),
+                    mark5=row[10]
                 )
             messages.success(request, "Data imported successfully!")
             return HttpResponse("imported successfully")
@@ -189,13 +201,13 @@ class ExportToExcelView(View):
         ws = wb.active
         ws.title = "Excel Upload Data"
         # Define the headers
-        headers = ['Name', 'Date of Birth', 'Phone']
+        headers = ['stuname', 'sub1', 'mark1','sub2','mark2','sub3','mark3','sub4','mark4','sub5','mark5']
         ws.append(headers)
         # Fetch the data from the database
-        excel_uploads = excelupload.objects.all()
+        excel_uploads = Reportcard.objects.all()
         # Append the data to the worksheet
         for upload in excel_uploads:
-            ws.append([upload.name, upload.dob, upload.phone])
+            ws.append([upload.stuname.first_name, upload.sub1.name,upload.mark1,upload.sub2.name,upload.mark2,upload.sub3.name,upload.mark3,upload.sub4.name,upload.mark4,upload.sub5.name,upload.mark5])
         # Create an HTTP response with the appropriate headers for Excel file download
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=excelupload_data.xlsx'

@@ -10,15 +10,15 @@ from .models import *
 from .forms import *
 from attendanceapp.models import *
 from django.utils.dateparse import parse_date
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
     
 class indexview(View):
     def get(self,request):
         return render(request,'index.html')
        
-    
- 
+
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
@@ -84,11 +84,13 @@ class DeleteCourseView(View):
         course.delete()
         return redirect('course_list')
 
-
+@method_decorator(cache_page(60*2),name='dispatch')
 class CourseListView(View):
     def get(self, request):
         courses = Course.objects.all()
         return render(request, 'course/course_list.html', {'courses': courses})
+
+
 
 
 class AddBatchView(View):
@@ -185,7 +187,7 @@ class TeacherDeleteView(View):
 
 class TeacherListView(View):
     def get(self, request):
-        teachers = Teacher.objects.all()
+        teachers = Teacher.objects.select_related('course', 'batch', 'country', 'state', 'city').all()
         return render(request, 'teacher/teacher_list.html', {'teachers': teachers})
 
 
@@ -194,25 +196,23 @@ class StudentCreateView(View):
         form=Studentform()
         return render(request,'student/student_create.html',{'form':form})
     def post(self,request):
-        if request.method=='POST':
-
-            form=Studentform(request.POST)
-            if form.is_valid():
-                name= form.cleaned_data['first_name']
-                user_name=name.lower().replace('','') # Convert name to lowercase and remove spaces
-                random_number=random.randint(1000,9999)
-                password=f'{user_name}{random_number}'  # Create password by combining the username and random number
-                student=form.save(commit=False) # Create a model instance without saving to the database yet
-                student.username=user_name
-                student.set_password(password)
-                form.save()   # Save the model instance to the database
-                #send mail to teacher which contains username and password
-                subject='Account Information'
-                message=f'Hi {name}\n\n your Username i :{user_name} and Password is :{password}\n\n Please reset password after first login'
-                send_mail_from=settings.EMAIL_HOST_USER
-                recipient_list=[form.cleaned_data['email']]
-                send_mail(subject,message,send_mail_from,recipient_list)
-                return redirect('student_list')
+        form=Studentform(request.POST)
+        if form.is_valid():
+            name= form.cleaned_data['first_name']
+            user_name=name.lower().replace('','') # Convert name to lowercase and remove spaces
+            random_number=random.randint(1000,9999)
+            password=f'{user_name}{random_number}'  # Create password by combining the username and random number
+            student=form.save(commit=False) # Create a model instance without saving to the database yet
+            student.username=user_name
+            student.set_password(password)
+            form.save()   # Save the model instance to the database
+            #send mail to teacher which contains username and password
+            subject='Account Information'
+            message=f'Hi {name}\n\n your Username i :{user_name} and Password is :{password}\n\n Please reset password after first login'
+            send_mail_from=settings.EMAIL_HOST_USER
+            recipient_list=[form.cleaned_data['email']]
+            send_mail(subject,message,send_mail_from,recipient_list)
+            return redirect('student_list')
 
 
 class StudentUpdateView(View):
@@ -226,7 +226,7 @@ class StudentUpdateView(View):
         form = Studentform(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect('student_list')  # Redirect to a URL name for the teacher list
+            return redirect('student_list') 
         return render(request, 'student/student_update.html', {'form': form})
 
 
@@ -238,12 +238,11 @@ class StudentDeleteView(View):
     def post(self, request, pk):
         student = Student.objects.get(pk=pk)
         student.delete()
-        return redirect('student_list')  # Redirect to a URL name for the teacher list
-
+        return redirect('student_list')  
 
 class StudentListView(View):
     def get(self, request):
-        student = Student.objects.all()
+        student = Student.objects.select_related('courses', 'batch', 'country', 'state', 'city').all()
         return render(request, 'student/student_list.html', {'student': student})
 
 class AttendanceReportView(View):

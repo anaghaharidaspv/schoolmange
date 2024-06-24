@@ -73,6 +73,11 @@
                 
                 <a href="{% url 'teacherapp:teacher_logout' %}" class="btn btn-sm btn-danger">Logout</a>
                 <a href="{% url 'teacherapp:pass_reset' teacher.id %}" class="btn btn-sm btn-warning">Reset Password</a>
+                <a href="{% url 'teacherapp:exportdata' %}" class="btn btn-sm btn-warning">Export data</a>
+                <a href="{% url 'teacherapp:import' %}" class="btn btn-sm btn-warning">Import data</a>
+                <a href="{% url 'reportcard_create' %}" class="btn btn-sm btn-warning">Reportcard </a>
+
+
             </div>
         </div>
     </div>

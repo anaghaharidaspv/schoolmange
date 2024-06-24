@@ -17,6 +17,7 @@ class UploadImageView(View):
       
       
 class ImageListView(View):
+
     def get(self, request):
         images = ImageUpload.objects.all()
         return render(request, 'image/image_list.html', {'images': images})
